@@ -21,6 +21,11 @@ var THEYLIVE = {
         this.dodrop(event);
     },
 
+    facadedrop: function (event) {
+        "use strict";
+        this.dodrop(event);
+    },
+
     dodrop: function (event) {
         "use strict";
         var dt = event.dataTransfer;
@@ -85,27 +90,19 @@ var THEYLIVE = {
         var context = canvas.getContext('2d');
         var i;
         context.drawImage(canvasFacade, 0, 0);
-        document.body.appendChild(canvas);
+        document.getElementById("result").appendChild(canvas);
 
         var hiddenData = canvasCode.getContext('2d').getImageData(0, 0, 200, 200);
-        var pixelValue;
-
-        // convert to black & white
-        for (i = 0; i < hiddenData.length; i = i + 4) {
-            // convert to black & white
-            pixelValue = ((hiddenData.data[i] + hiddenData.data[i + 1] + hiddenData.data[i + 2]) / 3) > 127 ? 255 : 0;
-            hiddenData.data[i] = pixelValue;
-            hiddenData.data[i + 1] = pixelValue;
-            hiddenData.data[i + 2] = pixelValue;
-        }
-
         var imgData = canvasFacade.getContext('2d').getImageData(0, 0, 200, 200);
 
         for (i = 0; i < imgData.data.length; i = i + 4) {
             // If the hiddenData value is 0 (black) we want the 1-bit to be black
             // If the hiddenData value is 1 (white) we want the 1-bit to be white
-
-            imgData.data[i] = (hiddenData.data[i] & 1) ? imgData.data[i] | 1 : imgData.data[i] & 254;
+            if (hiddenData.data[i] & 1) {
+                imgData.data[i] = imgData.data[i] | 1;
+            } else {
+                imgData.data[i] = imgData.data[i] & 254;
+            }
         }
         context.putImageData(imgData, 0, 0);
     },
@@ -125,17 +122,17 @@ var THEYLIVE = {
             canvasTemp.height = sprites[0].height;
             var ctxTemp = canvasTemp.getContext('2d');
             ctxTemp.drawImage(sprites[0], 0, 0);
-            document.body.appendChild(canvasTemp);
             if (iid.indexOf("code") >= 0) {
+                document.getElementById("code").appendChild(canvasTemp);
+                // convert to black and white
                 self.onebit(canvasTemp);
                 self.codeImage = canvasTemp;
             }
             if (iid.indexOf("facade") >= 0) {
+                document.getElementById("facade").appendChild(canvasTemp);
                 self.facadeImage = canvasTemp;
             }
 
-            console.log("Has code? " + self.hasCodeImage());
-            console.log("Has facade? " + self.hasFacadeImage());
             if (self.hasCodeImage() && self.hasFacadeImage()) {
                 self.combineImages(self.codeImage, self.facadeImage);
             }

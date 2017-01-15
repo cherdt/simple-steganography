@@ -1,0 +1,21 @@
+h2 {
+	clear: both;
+}
+
+div#facadedrop,
+div#codedrop {
+    border: 1px solid black;
+    float: left;
+    margin-right: 1em;
+    min-height: 200px;
+    width: 300px;
+}
+
+#facade,
+#code,
+#result {
+	border:1px solid black;
+	float: left;
+	margin-right: 1em;
+	width: 300px;
+}

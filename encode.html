@@ -4,20 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-size=1">
   <title>They Live Steganography - Encode Image</title>
-  <style type="text/css">
-    div#facadedrop, div#codedrop {
-      border: 1px solid black;
-      float: left;
-      min-height: 200px;
-      width: 300px;
-    }
-  </style>
+  <link rel="stylesheet" href="css/encode.css">
 </head>
 
 <body>
 
 <h1>Encode an Image</h1>
-<p>Use this page to hide one image inside another image using <a href="/chris/steganography/">They Live Steganography</a>.</p>
+<p>Use this page to hide one image inside another image using <a href="/chris/steganography/">They Live Steganography</a>. It works best if the images are the same dimensions.</p>
 
 <p>Need to create an image for your secret message? Try the <a href="https://imgflip.com/memegenerator">imgflip Meme Generator</a> (select the "Private" option when creating it).</p>.
 
@@ -33,9 +26,14 @@
      ondragenter="document.getElementById('facadedrop').textContent = ''; event.stopPropagation(); event.preventDefault();"
      ondragover="event.stopPropagation(); event.preventDefault();"
      ondrop="event.stopPropagation(); event.preventDefault();
-     THEYLIVE.dodrop(event);">
+     THEYLIVE.facadedrop(event);">
      <p>Drop another image file here from Finder (Mac) or File Explorer (Windows). We'll hide your secret message <em>inside</em> this image.</p>
 </div>
+
+<h2>Results</h2>
+<div id="code"><h3>Image to hide (converted to black and white)</h3></div>
+<div id="facade"><h3>Facade image (the image to contain the hidden image)</h3></div>
+<div id="result"><h3>Combined image (right-click and select "Save Image As..."</h3></div>
 
 <script src="js/encode.js"></script>
 <script>

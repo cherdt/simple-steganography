@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Steganography - They Live - HTML5 Canvas</title>
+<style type="text/css">
+div.container { float:left; } 
+div.actions { clear:left; }
+img { display:block; }
+</style>
+</head>
+<body>
+
+<h1>Steganography</h1>
+
+<p>Just-for-fun and currently a work-in-progress.</p>
+<ul>
+    <li><a href="encode.html">encode</a></li>
+    <li><a href="decode.html">decode</a></li>
+</ul>
+
+<form>
+<div id="container1" class="container">
+<label>Image 1 Source URL
+<input type="text" id="path1" name="path1" value="http://osric.com/chris/images/business-cat-meme.jpg" size="70">
+</label>
+<input type="button" value="Load 1" onClick="loadPath()">
+</div>
+<div id="container2" class="container">
+<label>Image 2 Source URL
+<input type="text" id="path2" name="path2" value="http://osric.com/chris/images/consume-and-dispose.png" size="70">
+</label>
+<input type="button" value="Load 2" onClick="loadPath()">
+</div>
+<div id="container3" class="container">
+<canvas id="combined" width="200" height="200"></canvas>
+<p>Combined Result</p>
+</div>
+<div id="container4" class="container">
+<canvas id="revealed" width="200" height="200"></canvas>
+<p>Hidden Image Revealed</p>
+</div>
+<div class="actions">
+<input type="button" value="combine" onClick="combineImages();">
+<input type="button" value="reveal" onClick="revealHiddenImage();">
+</div>
+</form>
+
+<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha256-/SIrNqv8h6QGKDuNoLGA4iret+kyesCkHGzVUUV0shc=" crossorigin="anonymous"></script>
+
+<script>
+var doit = new function() {
+    var src1 = $("#path1").attr('value');
+    var src2 = $("#path2").attr('value');
+    $("#container1").prepend('<img id="img1" src="' + src1 + '">');
+    $("#container2").prepend('<img id="img2" src="' + src2 + '">');
+}
+
+function loadPath() {
+    var image1 = document.getElementById("img1");
+    var image2 = document.getElementById("img2");
+    image1.src = $("#path1").val();
+    image2.src = $("#path2").val();
+}
+
+function combineImages() {
+    console.log("combine");
+    var img1 = document.getElementById("img1");
+    var img2 = document.getElementById("img2");
+    var canvas = document.getElementById("combined");
+    var context = canvas.getContext('2d');
+    context.drawImage(img2, 0, 0);
+
+    var hiddenData = context.getImageData(0, 0, 200, 200);
+    for (var i = 0; i < hiddenData.length; i = i + 4) {
+        // convert to black & white
+        var pixelValue = ((hiddenData.data[i] + hiddenData.data[i+1] + hiddenData.data[i+2])/3) > 127 ? 255 : 0;
+        hiddenData.data[i] = hiddenData.data[i+1] = hiddenData.data[i+2] = pixelValue;
+    }    
+
+    //context.putImageData(hiddenData, 0 , 0);
+    context.drawImage(img1, 0, 0);
+ 
+    var imgData = context.getImageData(0, 0, 200, 200);
+    for (var i = 0; i < imgData.data.length; i = i + 4) {
+        // If the hiddenData value is 0 (black) we want the 1-bit to be black
+        // If the hiddenData value is 1 (white) we want the 1-bit to be white
+        var before = imgData.data[i];
+        imgData.data[i] = (hiddenData.data[i] & 1) ? imgData.data[i] | 1 : imgData.data[i] & 254;
+    }
+    context.putImageData(imgData, 0, 0);
+}
+
+function revealHiddenImage() {
+    console.log("reveal");
+    var canvas1 = document.getElementById("combined");
+    var canvas2 = document.getElementById("revealed");
+    var context1 = canvas1.getContext('2d');
+    var context2 = canvas2.getContext('2d');
+    var data1 = context1.getImageData(0, 0, 200, 200);
+    var data2 = context1.getImageData(0, 0, 200, 200);
+   
+    console.log(data1.data[0], data1.data[3]);
+    console.log(data2.data[0], data2.data[3]);
+ 
+    for (var i = 0; i < data1.data.length; i = i + 4) {
+        data2.data[i] = data2.data[i+1] = data2.data[i+2] = (data1.data[i] & 1) ? 255 : 0;
+        data2.data[i+3] = 255; // alpha = 100% 
+    }
+    
+    console.log(data2.data[70000], data2.data[3]);
+    context2.putImageData(data2, 0, 0);
+}
+
+$(doit);
+</script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-19082249-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

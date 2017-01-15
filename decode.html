@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-size=1">
+  <title>They Live Steganography - Decode Image</title>
+  <link rel="stylesheet" href="css/decode.css">
+</head>
+<body>
+
+<h1>Decode an Image</h1>
+<p>Use this page to decode an image hidden inside another image (typically a .png file) using <a href="/chris/steganography/">They Live Steganography</a>. A <a href="https://github.com/cherdt/they-live">Chrome extension</a> is also available to decode images directly on web pages.</p>
+
+<div id="input"
+     ondragenter="document.getElementById('input').textContent = ''; event.stopPropagation(); event.preventDefault();"
+     ondragover="event.stopPropagation(); event.preventDefault();"
+     ondrop="event.stopPropagation(); event.preventDefault();
+     THEYLIVE.processDrop(event);">
+</div>
+
+<h2>Drop and drag an image</h2>
+<p>Drop an image file from your desktop (Finder on a Mac or Explorer on Windows) onto the <strong>VUR (Very Ugly Robot)</strong>. We'll display the hidden image, if any exists.</p>
+<p>If your file does not contain a hidden image, the result will be a black and white image that probably won't look like anything!</p>
+
+
+<script src="js/decode.js"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-19082249-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

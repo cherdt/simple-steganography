@@ -1,0 +1,24 @@
+body {
+	font-family: sans-serif;
+}
+
+div#input {
+	background-color: #f2f2de;
+	background-image: url("../images/robot-monster.png");
+	background-position: center center;
+	background-repeat: no-repeat;
+	border: 2px solid #666;
+	float: right;
+	min-height: 200px;
+	width: 200px;
+}
+
+div.imagePair {
+	background-color: #eee;
+	padding:1em;
+}
+
+canvas.coded {
+	float: left;
+	margin-right:1em;
+}

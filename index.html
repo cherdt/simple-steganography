@@ -6,13 +6,14 @@
 div.container { float:left; } 
 div.actions { clear:left; }
 img { display:block; }
+dt { font-weight: bold; margin-top: .5em; }
 </style>
 </head>
 <body>
 
 <h1>They Live - Simple Steganography</h1>
 
-<p>Just-for-fun and currently a work-in-progress.</p>
+<p>Just for fun. Currently a work-in-progress.</p>
 <ul>
     <li><a href="encode.html">encode</a> a steganographic image</li>
     <li><a href="decode.html">decode</a> a steganographic image</li>
@@ -28,11 +29,13 @@ img { display:block; }
 <dt>Why would someone want to do that?</dt>
 <dd>If a secret message is intercepted, it is obvious that it is a secret message, right? But what if the secret message looks like a different, harmless message? Steganography would allow people to share a message that, on the surface, looks like something innocuous (for example, a Business Cat meme) but contains a hidden message.</dd>
 <dt>Can I use this to send secret messages?</dt>
-<dd>Well, yes and no. These messages would be pretty easy to decrypt. I wouldn't use this to hide information from an intelligence agency, but you might be able to hide something from your parents.</dd>
+<dd>Well, yes and no. The hidden messages would be pretty easy to find. I wouldn't use this to hide information from an intelligence agency, but you might be able to hide something from your parents. Assuming your parents don't work for an intelligence agency.</dd>
 <dt>I tried it and it didn't work!</dt>
-<dd>Right now, it is expecting images that are 200 by 200 pixels (a stanard size for many memes). I am working on making it work for other image sizes.</dd>
+<dd>Right now, it is expecting images that are 200 by 200 pixels (a common size for many memes). I am working on making it work for other image sizes.</dd>
+<dt>I posted an encoded image to Twitter or Facebook and it no longer contains the encoded message. Why not?</dt>
+<dd>Twitter and Facebook convert uploaded images to JPEGs. The JPEG format is a lossy format and the conversion will almost certainly eliminate the coded message. I've successfully posted an encoded image to Tumblr though.</dd>
 <dt>How does it work?</dt>
-<dd>Black and white images (not grayscale) contain only one bit of data per pixel. I am altering the least significant red bit in each pixel of the facade image to match the corresponding bit of the black and white code image. The result is different, but not perceptible to the human eye in most cases.</dd>
+<dd>Black and white images (not grayscale, but literally just black and white) contain only one bit of data per pixel. The encoder alters the least significant red bit in each pixel of the facade image to match the corresponding bit of the black and white code image. The result is different, but not perceptible to the human eye in most cases.</dd>
 <dt>Why did you call it "They Live"?</dt>
 <dd><a href="http://www.imdb.com/title/tt0096256/">They Live</a> is a 1998 movie directed by John Carpenter. The main character discovers, with the help of a special pair of sunglasses, that the world is full of subliminal messages hidden in plain sight.</dd>
 </dl>

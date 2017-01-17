@@ -1,14 +1,50 @@
+body {
+	padding-right:230px;
+}
+
 h2 {
 	clear: both;
 }
 
-div#facadedrop,
-div#codedrop {
+#facadedrop,
+#codedrop {
     border: 1px solid black;
-    float: left;
+    min-height: 100px;
+}
+
+#codeContainer,
+#facadeContainer {
+    float: right;
     margin-right: 1em;
-    min-height: 200px;
-    width: 300px;
+    position: fixed;
+    top:10px;
+    width: 100px;	
+}
+
+h3,
+#codeData,
+#facadeData {
+	background-color: black;
+	color: white;
+	font-family: arial, helvetica, sans-serif;
+	font-size: x-small;
+	margin: 0em; 
+}
+
+#codeContainer {
+	right: 120px;
+}
+
+#facadeContainer {
+	right: 10px;
+}
+
+#codedrop {
+	background-image: url(../images/code_100x100.png);
+}
+
+#facadedrop {
+	background-image: url(../images/facade_100x100.png);
 }
 
 #facade,
@@ -17,5 +53,6 @@ div#codedrop {
 	border:1px solid black;
 	float: left;
 	margin-right: 1em;
+	min-height: 300px;
 	width: 300px;
 }

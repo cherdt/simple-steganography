@@ -37,11 +37,16 @@ var THEYLIVE = {
 
         for (i = 0; i < files.length; i += 1) {
             this.loadimg(files[i], event.target.id);
-            this.output(files[i].name + "\n", event.target);
+            this.appendText(files[i].name + "\n", event.target);
         }
     },
 
-    output: function (text, target, clear = false) {
+    appendText: function (text, target) {
+        "use strict";
+        this.output(text, target, false);
+    },
+
+    output: function (text, target, clear) {
         "use strict";
         var newTarget = document.getElementById((target.id).replace("drop", "Data"));
         if (clear) {

@@ -76,6 +76,7 @@ var THEYLIVE = {
         "use strict";
         var canvas = document.createElement("canvas");
         var context, i, hiddenData, imgData;
+        var width, height;
         // The new canvas needs to be the size of the facade
         canvas.width = canvasFacade.width;
         canvas.height = canvasFacade.height;
@@ -83,8 +84,12 @@ var THEYLIVE = {
         context.drawImage(canvasFacade, 0, 0);
         document.getElementById("result").appendChild(canvas);
 
-        hiddenData = canvasCode.getContext('2d').getImageData(0, 0, 200, 200);
-        imgData = canvasFacade.getContext('2d').getImageData(0, 0, 200, 200);
+        // We need to iterate over only the overlapping pixels
+        // If the images are different dimensions, we can only use the intersection
+        width = Math.min(canvasCode.width, canvasFacade.width);
+        height = Math.min(canvasCode.height, canvasFacade.height);
+        hiddenData = canvasCode.getContext('2d').getImageData(0, 0, width, height);
+        imgData = canvasFacade.getContext('2d').getImageData(0, 0, width, height);
 
         for (i = 0; i < imgData.data.length; i = i + 4) {
             // If the hiddenData value is 0 (black) we want the 1-bit to be black

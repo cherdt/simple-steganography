@@ -3,6 +3,7 @@
 <head>
 <title>Simple Steganography - They Live</title>
 <style type="text/css">
+#obey { float: right; }
 div.container { float:left; } 
 div.actions { clear:left; }
 img { display:block; }
@@ -10,6 +11,8 @@ dt { font-weight: bold; margin-top: .5em; }
 </style>
 </head>
 <body>
+
+<div id="obey"><img src="images/obey-conform-buy_200x200.png" width="200" height="200" alt="Obey Consume Buy"></div>
 
 <h1>They Live - Simple Steganography</h1>
 
@@ -20,8 +23,6 @@ dt { font-weight: bold; margin-top: .5em; }
     <li><a href="https://github.com/cherdt/they-live">Chrome extension</a></li>
 </ul>
 
-<div><img src="images/obey-conform-buy_200x200.png" width="200" height="200" alt="Obey Consume Buy"></div>
-
 <h2>Frequently Asked Questions</h2>
 <dl>
 <dt>What is <em>steganography</em>?</dt>
@@ -30,8 +31,8 @@ dt { font-weight: bold; margin-top: .5em; }
 <dd>If a secret message is intercepted, it is obvious that it is a secret message, right? But what if the secret message looks like a different, harmless message? Steganography would allow people to share a message that, on the surface, looks like something innocuous (for example, a Business Cat meme) but contains a hidden message.</dd>
 <dt>Can I use this to send secret messages?</dt>
 <dd>Well, yes and no. The hidden messages would be pretty easy to find. I wouldn't use this to hide information from an intelligence agency, but you might be able to hide something from your parents. Assuming your parents don't work for an intelligence agency.</dd>
-<dt>I tried it and it didn't work!</dt>
-<dd>Right now, it is expecting images that are 200 by 200 pixels (a common size for many memes). I am working on making it work for other image sizes.</dd>
+<dt>I tried it but part of my hidden message is missing!</dt>
+<dd>If your facade image is smaller than your hidden message, only the portion of your hidden message that fits within the facade image will be included. It works best if your hidden message and your facade image are the same size, but a larger facade image will work too.</dd>
 <dt>I posted an encoded image to Twitter or Facebook and it no longer contains the encoded message. Why not?</dt>
 <dd>Twitter and Facebook convert uploaded images to JPEGs. The JPEG format is a lossy format and the conversion will almost certainly eliminate the coded message. I've successfully posted an encoded image to Tumblr though.</dd>
 <dt>How does it work?</dt>

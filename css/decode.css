@@ -1,5 +1,12 @@
 body {
-	font-family: sans-serif;
+	padding-right:230px;
+}
+
+h3 {
+	background-color: black;
+	color:white;
+	font-family: arial, helvetica, sans-serif;
+	margin-bottom: 0px;
 }
 
 div#input {
@@ -10,6 +17,9 @@ div#input {
 	border: 2px solid #666;
 	float: right;
 	min-height: 200px;
+	position: fixed;
+	top: 10px;
+	right: 10px;
 	width: 200px;
 }
 

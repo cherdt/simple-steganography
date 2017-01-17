@@ -30,32 +30,26 @@ var THEYLIVE = {
         "use strict";
         var dt = event.dataTransfer;
         var files = dt.files;
-
         var count = files.length;
         var i;
-        if (count !== 1) {
-            console.log("Expected just 1 file.");
-        }
-        console.log(event);
 
-        this.output("File Count: " + count + "\n", event.target);
+        this.output("File Count: " + count + "\n", event.target, true);
 
         for (i = 0; i < files.length; i += 1) {
-            console.log("Type of " + i + ": " + dt.types[i]);
-            console.log("Item of " + i + ": " + dt.items[i]);
-
             this.loadimg(files[i], event.target.id);
-
-            this.output(" File " + i + ":\n(" + (typeof files[i]) + ") : <" + files[i] + " > " +
-                    files[i].name + " " + files[i].size + "\n", event.target);
-
+            this.output(files[i].name + "\n", event.target);
         }
     },
 
-    output: function (text, target) {
+    output: function (text, target, clear = false) {
         "use strict";
-        target.textContent += text;
-        //dump(text);
+        var newTarget = document.getElementById((target.id).replace("drop", "Data"));
+        if (clear) {
+            newTarget.textContent = text;
+        } else {
+            newTarget.textContent += text;
+        }
+        newTarget.textContent += "\n";
     },
 
     onebit: function (cnvs) {
@@ -80,20 +74,17 @@ var THEYLIVE = {
 
     combineImages: function (canvasCode, canvasFacade) {
         "use strict";
-        console.log("combine");
         var canvas = document.createElement("canvas");
+        var context, i, hiddenData, imgData;
         // The new canvas needs to be the size of the facade
         canvas.width = canvasFacade.width;
         canvas.height = canvasFacade.height;
-
-
-        var context = canvas.getContext('2d');
-        var i;
+        context = canvas.getContext('2d');
         context.drawImage(canvasFacade, 0, 0);
         document.getElementById("result").appendChild(canvas);
 
-        var hiddenData = canvasCode.getContext('2d').getImageData(0, 0, 200, 200);
-        var imgData = canvasFacade.getContext('2d').getImageData(0, 0, 200, 200);
+        hiddenData = canvasCode.getContext('2d').getImageData(0, 0, 200, 200);
+        imgData = canvasFacade.getContext('2d').getImageData(0, 0, 200, 200);
 
         for (i = 0; i < imgData.data.length; i = i + 4) {
             // If the hiddenData value is 0 (black) we want the 1-bit to be black
@@ -114,7 +105,6 @@ var THEYLIVE = {
         Promise.all([
             createImageBitmap(file)
         ]).then(function (sprites) {
-            console.log(sprites[0]);
             var canvasTemp;
             canvasTemp = document.createElement("canvas");
             canvasTemp.id = iid.replace("drop", "Canvas");

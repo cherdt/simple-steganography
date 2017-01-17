@@ -10,30 +10,41 @@
 <body>
 
 <h1>Encode an Image</h1>
-<p>Use this page to hide one image inside another image using <a href="/chris/steganography/">They Live Steganography</a>. It works best if the images are the same dimensions.</p>
+<p>Use this page to hide one image inside another image using <a href="index.html">They Live Steganography</a>. It works best if the images are the same dimensions.</p>
 
-<p>Need to create an image for your secret message? Try the <a href="https://imgflip.com/memegenerator">imgflip Meme Generator</a> (select the "Private" option when creating it).</p>.
+<h2>Instructions</h2>
+<p>You will need <strong>2</strong> images. One image will be your hidden message. The other image will be a <em>facade</em> -- the image that everyone sees.</p>
 
-<div id="codedrop"
-     ondragenter="document.getElementById('codedrop').textContent = ''; event.stopPropagation(); event.preventDefault();"
-     ondragover="event.stopPropagation(); event.preventDefault();"
-     ondrop="event.stopPropagation(); event.preventDefault();
-     THEYLIVE.codedrop(event);">
-     <p>Drop your secret message image file here from Finder (Mac) or File Explorer (Windows). We'll convert your image to black and white, but black and white originals work best.</p>
+<p>You will need to drag-and-drop the images from your computer. For example, drag files from the Desktop, or from File Explorer (Windows) or Finder (Mac). Drag-and-drop the image file with your hidden message onto the <strong>hidden image target</strong>, and drag-and-drop the image file with your <em>facade</em> image onto the <strong>facade image target</strong>.</p>
+
+<p>Need to create images for your hidden message or your facade image? Try the <a href="https://imgflip.com/memegenerator">imgflip Meme Generator</a> (select the "Private" option when creating it).</p>
+
+<div id="codeContainer">
+  <h3>Hidden Image Target</h3>
+  <div id="codedrop"
+       ondragenter="document.getElementById('codedrop').textContent = ''; event.stopPropagation(); event.preventDefault();"
+       ondragover="event.stopPropagation(); event.preventDefault();"
+       ondrop="event.stopPropagation(); event.preventDefault();
+       THEYLIVE.codedrop(event);">
+  </div>
+  <div id="codeData"></div>
 </div>
 
-<div id="facadedrop"
-     ondragenter="document.getElementById('facadedrop').textContent = ''; event.stopPropagation(); event.preventDefault();"
-     ondragover="event.stopPropagation(); event.preventDefault();"
-     ondrop="event.stopPropagation(); event.preventDefault();
-     THEYLIVE.facadedrop(event);">
-     <p>Drop another image file here from Finder (Mac) or File Explorer (Windows). We'll hide your secret message <em>inside</em> this image.</p>
+<div id="facadeContainer">
+  <h3>Facade Image Target</h3>
+  <div id="facadedrop"
+       ondragenter="document.getElementById('facadedrop').textContent = ''; event.stopPropagation(); event.preventDefault();"
+       ondragover="event.stopPropagation(); event.preventDefault();"
+       ondrop="event.stopPropagation(); event.preventDefault();
+       THEYLIVE.facadedrop(event);">
+  </div>
+  <div id="facadeData"></div>
 </div>
 
 <h2>Results</h2>
-<div id="code"><h3>Image to hide (converted to black and white)</h3></div>
-<div id="facade"><h3>Facade image (the image to contain the hidden image)</h3></div>
-<div id="result"><h3>Combined image (right-click and select "Save Image As..."</h3></div>
+<div id="code"><h3>Hidden Image (converted to black and white)</h3></div>
+<div id="facade"><h3>Facade Image (the image to contain the hidden image)</h3></div>
+<div id="result"><h3>Combined image (right-click and select "Save Image As...")</h3></div>
 
 <script src="js/encode.js"></script>
 <script>

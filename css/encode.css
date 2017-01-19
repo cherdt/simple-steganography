@@ -56,3 +56,15 @@ h3,
 	min-height: 300px;
 	width: 300px;
 }
+
+#facade div,
+#code div,
+#result div {
+	padding: 1em;
+}
+
+#facade div:nth-child(even),
+#code div:nth-child(even),
+#result div:nth-child(even) {
+	background: #CCC;
+}

@@ -3,17 +3,17 @@
 */
 
 var THEYLIVE = {
-    codeImage: null,
-    facadeImage: null,
+    codeImage: [],
+    facadeImage: [],
 
     hasCodeImage: function () {
         "use strict";
-        return (this.codeImage !== null);
+        return (this.codeImage.length > 0);
     },
 
     hasFacadeImage: function () {
         "use strict";
-        return (this.facadeImage !== null);
+        return (this.facadeImage.length > 0);
     },
 
     codedrop: function (event) {
@@ -79,6 +79,7 @@ var THEYLIVE = {
 
     combineImages: function (canvasCode, canvasFacade) {
         "use strict";
+        var div = document.createElement("div");
         var canvas = document.createElement("canvas");
         var context, i, hiddenData, imgData;
         var width, height;
@@ -87,7 +88,8 @@ var THEYLIVE = {
         canvas.height = canvasFacade.height;
         context = canvas.getContext('2d');
         context.drawImage(canvasFacade, 0, 0);
-        document.getElementById("result").appendChild(canvas);
+        div.appendChild(canvas);
+        document.getElementById("result").appendChild(div);
 
         // We need to iterate over only the overlapping pixels
         // If the images are different dimensions, we can only use the intersection
@@ -115,26 +117,36 @@ var THEYLIVE = {
         Promise.all([
             createImageBitmap(file)
         ]).then(function (sprites) {
-            var canvasTemp;
-            canvasTemp = document.createElement("canvas");
-            canvasTemp.id = iid.replace("drop", "Canvas");
-            canvasTemp.width = sprites[0].width;
-            canvasTemp.height = sprites[0].height;
-            var ctxTemp = canvasTemp.getContext('2d');
+            var divElement;
+            var canvasElement;
+            divElement = document.createElement("div");
+            canvasElement = document.createElement("canvas");
+            canvasElement.id = iid.replace("drop", "Canvas");
+            canvasElement.width = sprites[0].width;
+            canvasElement.height = sprites[0].height;
+            var ctxTemp = canvasElement.getContext('2d');
             ctxTemp.drawImage(sprites[0], 0, 0);
+
             if (iid.indexOf("code") >= 0) {
-                document.getElementById("code").appendChild(canvasTemp);
                 // convert to black and white
-                self.onebit(canvasTemp);
-                self.codeImage = canvasTemp;
-            }
-            if (iid.indexOf("facade") >= 0) {
-                document.getElementById("facade").appendChild(canvasTemp);
-                self.facadeImage = canvasTemp;
+                self.onebit(canvasElement);
+                // enqueue the image onto the queue of code images
+                self.codeImage.push(canvasElement);
+                // add the div & canvas to the page
+                divElement.appendChild(canvasElement);
+                document.getElementById("code").appendChild(divElement);
             }
 
-            if (self.hasCodeImage() && self.hasFacadeImage()) {
-                self.combineImages(self.codeImage, self.facadeImage);
+            if (iid.indexOf("facade") >= 0) {
+                // unqueue the image onto the queue of facade images
+                self.facadeImage.push(canvasElement);
+                // add the div & canvas to the page
+                divElement.appendChild(canvasElement);
+                document.getElementById("facade").appendChild(divElement);
+            }
+
+            while (self.hasCodeImage() && self.hasFacadeImage()) {
+                self.combineImages(self.codeImage.shift(), self.facadeImage.shift());
             }
 
         });

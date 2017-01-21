@@ -18,6 +18,13 @@
      THEYLIVE.processDrop(event);">
 </div>
 
+<div id="mask" 
+     ondragenter="document.getElementById('mask').textContent = ''; event.stopPropagation(); event.preventDefault();"
+     ondragover="event.stopPropagation(); event.preventDefault();"
+     ondrop="event.stopPropagation(); event.preventDefault();
+     THEYLIVE.processMask(event);">
+</div>
+
 <h2>Drop and drag an image</h2>
 <p>Drop an image file from your desktop (Finder on a Mac or Explorer on Windows) onto the <strong>VUR (Very Ugly Robot)</strong>. We'll display the hidden image, if any exists.</p>
 <p>If your file does not contain a hidden image, the result will be a black and white image that probably won't look like anything!</p>

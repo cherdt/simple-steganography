@@ -9,6 +9,15 @@ h3 {
 	margin-bottom: 0px;
 }
 
+#mask {
+	border: 2px solid red;
+	height: 100px;
+	position: fixed;
+	right: 10px;
+	top: 10px;
+	width: 100px;
+}
+
 div#input {
 	background-color: #f2f2de;
 	background-image: url("../images/robot-monster.png");
@@ -18,7 +27,7 @@ div#input {
 	float: right;
 	min-height: 200px;
 	position: fixed;
-	top: 10px;
+	top: 120px;
 	right: 10px;
 	width: 200px;
 }

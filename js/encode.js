@@ -77,12 +77,44 @@ var THEYLIVE = {
         cnvs.getContext("2d").putImageData(imgData, 0, 0);
     },
 
+    getRandomValue: function () {
+        "use strict";
+        if (Math.floor(Math.random() * 2) === 0) {
+            return 0;
+        }
+        return 255;
+    },
+
+    generateMask: function (canvasCode) {
+        "use strict";
+        var imgData;
+        var i;
+        var canvas = document.createElement("canvas");
+        canvas.width = 200;
+        canvas.height = 200;
+        //canvas.getContext('2d').drawImage(canvasCode, 0, 0);
+        document.getElementById("code").appendChild(canvas);
+        // 7680 pixels × 4320 is the highest UHD 8K TV resolution as of 2017
+
+        imgData = canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height);
+        for (i = 0; i < imgData.data.length; i = i + 4) {
+            imgData.data[i] = this.getRandomValue(); //0
+            imgData.data[i + 1] = this.getRandomValue(); //255
+            imgData.data[i + 2] = this.getRandomValue(); //255
+            imgData.data[i + 3] = 255; //255
+        }
+
+        canvas.getContext('2d').putImageData(imgData, 0, 0);
+        return imgData.data;
+    },
+
     combineImages: function (canvasCode, canvasFacade) {
         "use strict";
         var div = document.createElement("div");
         var canvas = document.createElement("canvas");
         var context, i, hiddenData, imgData;
         var width, height;
+        var mask = this.generateMask(canvasCode);
         // The new canvas needs to be the size of the facade
         canvas.width = canvasFacade.width;
         canvas.height = canvasFacade.height;
@@ -99,12 +131,13 @@ var THEYLIVE = {
         imgData = canvasFacade.getContext('2d').getImageData(0, 0, width, height);
 
         for (i = 0; i < imgData.data.length; i = i + 4) {
+            //imgData.data[i] = imgData.data[i] | ((imgData.data[i] & 1) ^ (1 & mask[i]));
             // If the hiddenData value is 0 (black) we want the 1-bit to be black
             // If the hiddenData value is 1 (white) we want the 1-bit to be white
-            if (hiddenData.data[i] & 1) {
-                imgData.data[i] = imgData.data[i] | 1;
+            if ((hiddenData.data[i] & 1) ^ (mask[i] & 1)) {
+                imgData.data[i] = imgData.data[i] | 1; // one LSB
             } else {
-                imgData.data[i] = imgData.data[i] & 254;
+                imgData.data[i] = imgData.data[i] & 254; // zero LSB
             }
         }
         context.putImageData(imgData, 0, 0);

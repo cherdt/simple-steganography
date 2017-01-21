@@ -76,7 +76,8 @@ h4,
 }
 
 #key div {
-	overflow-x: hidden;
+	max-height: 204px;
+	overflow: hidden;
 }
 
 

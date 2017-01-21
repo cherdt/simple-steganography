@@ -105,14 +105,14 @@ var THEYLIVE = {
         return minmax(0, 255);
     },
 
-    generateMask: function (canvasCode) {
+    generateMask: function () {
         "use strict";
         var imgData;
         var i;
         var divElement = document.createElement("div");
         var canvas = document.createElement("canvas");
-        canvas.width = 200;
-        canvas.height = 200;
+        canvas.width = 1920;
+        canvas.height = 1080;
         //canvas.getContext('2d').drawImage(canvasCode, 0, 0);
         divElement.appendChild(canvas);
         document.getElementById("key").appendChild(divElement);
@@ -154,7 +154,7 @@ var THEYLIVE = {
         imgData = canvasFacade.getContext('2d').getImageData(0, 0, width, height);
 
         // get key/mask data
-        if (this.useCustomKey && this.hasKeyImage) {
+        if (this.useCustomKey && this.hasKeyImage()) {
             mask = this.keyImage.shift().getContext('2d').getImageData(0, 0, width, height).data;
         } else {
             mask = this.generateMask(canvasCode);
@@ -202,7 +202,6 @@ var THEYLIVE = {
             canvasElement.height = sprites[0].height;
             var ctxTemp = canvasElement.getContext('2d');
             ctxTemp.drawImage(sprites[0], 0, 0);
-            console.log(iid);
 
             if (iid.indexOf("code") >= 0) {
                 // convert to black and white
@@ -223,7 +222,6 @@ var THEYLIVE = {
             }
 
             if (iid.indexOf("key") >= 0 || iid.indexOf("toggle") >= 0) {
-                console.log(self.useCustomKey);
                 canvasElement.id = "keyCanvas";
                 if (!self.useCustomKey) {
                     self.toggleKey();

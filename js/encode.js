@@ -5,6 +5,8 @@
 var THEYLIVE = {
     codeImage: [],
     facadeImage: [],
+    keyImage: [],
+    useCustomKey: false,
 
     hasCodeImage: function () {
         "use strict";
@@ -16,12 +18,22 @@ var THEYLIVE = {
         return (this.facadeImage.length > 0);
     },
 
+    hasKeyImage: function () {
+        "use strict";
+        return (this.keyImage.length > 0);
+    },
+
     codedrop: function (event) {
         "use strict";
         this.dodrop(event);
     },
 
     facadedrop: function (event) {
+        "use strict";
+        this.dodrop(event);
+    },
+
+    keydrop: function (event) {
         "use strict";
         this.dodrop(event);
     },
@@ -57,9 +69,9 @@ var THEYLIVE = {
         newTarget.textContent += "\n";
     },
 
-    onebit: function (cnvs) {
+    onebit: function (canvas) {
         "use strict";
-        var imgData = cnvs.getContext("2d").getImageData(0, 0, cnvs.width, cnvs.height);
+        var imgData = canvas.getContext("2d").getImageData(0, 0, canvas.width, canvas.height);
         var i, colorVal, red, green, blue;
         for (i = 0; i < imgData.data.length; i = i + 4) {
             if (((imgData.data[i] + imgData.data[i + 1] + imgData.data[i + 2]) / 3) > 127) {
@@ -74,7 +86,7 @@ var THEYLIVE = {
             imgData.data[green] = colorVal;
             imgData.data[blue] = colorVal;
         }
-        cnvs.getContext("2d").putImageData(imgData, 0, 0);
+        canvas.getContext("2d").putImageData(imgData, 0, 0);
     },
 
     getRandomValue: function () {
@@ -85,22 +97,32 @@ var THEYLIVE = {
         return 255;
     },
 
+    getValue: function (minmax) {
+        "use strict";
+        if (this.useCustomKey) {
+            return this.getRandomValue();
+        }
+        return minmax(0, 255);
+    },
+
     generateMask: function (canvasCode) {
         "use strict";
         var imgData;
         var i;
+        var divElement = document.createElement("div");
         var canvas = document.createElement("canvas");
         canvas.width = 200;
         canvas.height = 200;
         //canvas.getContext('2d').drawImage(canvasCode, 0, 0);
-        document.getElementById("code").appendChild(canvas);
+        divElement.appendChild(canvas);
+        document.getElementById("key").appendChild(divElement);
         // 7680 pixels × 4320 is the highest UHD 8K TV resolution as of 2017
 
         imgData = canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height);
         for (i = 0; i < imgData.data.length; i = i + 4) {
-            imgData.data[i] = this.getRandomValue(); //0
-            imgData.data[i + 1] = this.getRandomValue(); //255
-            imgData.data[i + 2] = this.getRandomValue(); //255
+            imgData.data[i] = this.getValue(Math.min); //0
+            imgData.data[i + 1] = this.getValue(Math.max); //255
+            imgData.data[i + 2] = this.getValue(Math.max); //255
             imgData.data[i + 3] = 255; //255
         }
 
@@ -114,7 +136,8 @@ var THEYLIVE = {
         var canvas = document.createElement("canvas");
         var context, i, hiddenData, imgData;
         var width, height;
-        var mask = this.generateMask(canvasCode);
+        var mask;
+
         // The new canvas needs to be the size of the facade
         canvas.width = canvasFacade.width;
         canvas.height = canvasFacade.height;
@@ -130,6 +153,13 @@ var THEYLIVE = {
         hiddenData = canvasCode.getContext('2d').getImageData(0, 0, width, height);
         imgData = canvasFacade.getContext('2d').getImageData(0, 0, width, height);
 
+        // get key/mask data
+        if (this.useCustomKey && this.hasKeyImage) {
+            mask = this.keyImage.shift().getContext('2d').getImageData(0, 0, width, height).data;
+        } else {
+            mask = this.generateMask(canvasCode);
+        }
+
         for (i = 0; i < imgData.data.length; i = i + 4) {
             //imgData.data[i] = imgData.data[i] | ((imgData.data[i] & 1) ^ (1 & mask[i]));
             // If the hiddenData value is 0 (black) we want the 1-bit to be black
@@ -141,6 +171,19 @@ var THEYLIVE = {
             }
         }
         context.putImageData(imgData, 0, 0);
+    },
+
+    toggleKey: function () {
+        "use strict";
+        var headerText = "Default Key";
+        var linkText = "Enable Custom Key";
+        this.useCustomKey = !this.useCustomKey;
+        if (this.useCustomKey) {
+            headerText = "Custom Key";
+            linkText = "Disable Custom Key";
+        }
+        document.getElementById("toggle").textContent = linkText;
+        document.getElementById("keyContainer").getElementsByTagName("h3")[0].textContent = headerText;
     },
 
     loadimg: function (file, id) {
@@ -159,6 +202,7 @@ var THEYLIVE = {
             canvasElement.height = sprites[0].height;
             var ctxTemp = canvasElement.getContext('2d');
             ctxTemp.drawImage(sprites[0], 0, 0);
+            console.log(iid);
 
             if (iid.indexOf("code") >= 0) {
                 // convert to black and white
@@ -171,11 +215,24 @@ var THEYLIVE = {
             }
 
             if (iid.indexOf("facade") >= 0) {
-                // unqueue the image onto the queue of facade images
+                // enqueue the image onto the queue of facade images
                 self.facadeImage.push(canvasElement);
                 // add the div & canvas to the page
                 divElement.appendChild(canvasElement);
                 document.getElementById("facade").appendChild(divElement);
+            }
+
+            if (iid.indexOf("key") >= 0 || iid.indexOf("toggle") >= 0) {
+                console.log(self.useCustomKey);
+                canvasElement.id = "keyCanvas";
+                if (!self.useCustomKey) {
+                    self.toggleKey();
+                }
+                // enqueue the image onto the queue of key images
+                self.keyImage.push(canvasElement);
+                // add the div & canvas to the page
+                divElement.appendChild(canvasElement);
+                document.getElementById("key").appendChild(divElement);
             }
 
             while (self.hasCodeImage() && self.hasFacadeImage()) {

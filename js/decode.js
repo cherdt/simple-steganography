@@ -2,52 +2,54 @@
     bitwise, browser
 */
 var THEYLIVE = {
+    keyImage: [],
+
     processDrop: function (event) {
         "use strict";
         var dt = event.dataTransfer;
         var files = dt.files;
         var count = files.length;
         var i;
-        this.output("Processing " + count + " files...\n", event.target);
+        this.output("Processing " + count + " files...\n", event.target, true);
 
         for (i = 0; i < count; i += 1) {
-            this.loadImage(files[i]);
+            this.appendText(files[i].name + "\n", event.target);
+            this.loadImage(files[i], event.target.id);
         }
     },
 
-    processMask: function (event) {
+    appendText: function (text, target) {
         "use strict";
-        var dt = event.dataTransfer;
-        var files = dt.files;
-        var count = files.length;
-        var i;
-        this.output("Processing " + count + " files...\n", event.target);
+        this.output(text, target, false);
+    },
 
-        for (i = 0; i < count; i += 1) {
-            this.loadMask(files[i]);
+    output: function (text, target, clear) {
+        "use strict";
+        var newTarget = document.getElementById((target.id).replace("Drop", "Data"));
+        if (clear) {
+            newTarget.textContent = text;
+        } else {
+            newTarget.textContent += text;
         }
+        newTarget.textContent += "\n";
     },
 
-    output: function (text, target) {
-        "use strict";
-        target.textContent += text;
-    },
-
-    getMask: function () {
+    getKey: function (width, height) {
         "use strict";
         var imgData = [];
         var i;
 
-        if (document.getElementById("maskImage")) {
-            imgData = document.getElementById("maskImage").getContext("2d").getImageData(0, 0, 200, 200).data;
+        console.log(this.keyImage.length);
+        if (this.keyImage.length > 0) {
+            imgData = this.keyImage[0].getContext("2d").getImageData(0, 0, width, height).data;
         } else {
             // 7680 pixels × 4320 is the highest UHD 8K TV resolution as of 2017
-            for (i = 0; i < 7680 * 4320; i = i + 4) {
+            for (i = 0; i < width * height; i = i + 4) {
                 imgData[i] = 0;
                 imgData[i + 1] = 255;
                 imgData[i + 2] = 255;
                 imgData[i + 3] = 255;
-            }            
+            }
         }
         return imgData;
     },
@@ -65,7 +67,7 @@ var THEYLIVE = {
         var green;
         var blue;
         var alpha;
-        var mask = this.getMask();
+        var key = this.getKey(canvas1.width, canvas1.height);
 
         canvas2.width = canvas1.width;
         canvas2.height = canvas1.height;
@@ -80,7 +82,7 @@ var THEYLIVE = {
             blue = i + 2;
             alpha = i + 3;
 
-            if ((data1.data[i] & 1) ^ (mask[i] & 1)) {
+            if ((data1.data[i] & 1) ^ (key[i] & 1)) {
                 data2.data[red] = 255;
             } else {
                 data2.data[red] = 0;
@@ -92,62 +94,37 @@ var THEYLIVE = {
         context2.putImageData(data2, 0, 0);
     },
 
-    loadImage: function (file) {
+    loadImage: function (file, id) {
         "use strict";
         var self = this;
         var sprite;
         var canvas;
         var context;
+        var iid = id;
         var header = document.createElement("h3");
         var container = document.createElement("div");
-
-        header.innerHTML = file.name;
-        container.className = "imagePair";
-        document.body.appendChild(header);
-        document.body.appendChild(container);
 
         Promise.all([
             createImageBitmap(file)
         ]).then(function (sprites) {
             sprite = sprites[0];
             canvas = document.createElement("canvas");
-            canvas.className = "coded";
             canvas.width = sprite.width;
             canvas.height = sprite.height;
             context = canvas.getContext("2d");
             context.drawImage(sprite, 0, 0);
-            container.appendChild(canvas);
-            self.revealHiddenImage(canvas, container);
-        });
-    },
 
-        loadMask: function (file) {
-        "use strict";
-        var self = this;
-        var sprite;
-        var canvas;
-        var context;
-        var header = document.createElement("h3");
-        var container = document.createElement("div");
-
-        header.innerHTML = file.name;
-        container.className = "imageMask";
-        document.body.appendChild(header);
-        document.body.appendChild(container);
-
-        Promise.all([
-            createImageBitmap(file)
-        ]).then(function (sprites) {
-            sprite = sprites[0];
-            canvas = document.createElement("canvas");
-            canvas.id = "maskImage";
-            canvas.className = "coded";
-            canvas.width = sprite.width;
-            canvas.height = sprite.height;
-            context = canvas.getContext("2d");
-            context.drawImage(sprite, 0, 0);
-            container.appendChild(canvas);
-            //self.revealHiddenImage(canvas, container);
+            if (iid.indexOf("input") >= 0) {
+                header.innerHTML = file.name;
+                container.className = "imagePair";
+                document.body.appendChild(header);
+                document.body.appendChild(container);
+                canvas.className = "coded";
+                container.appendChild(canvas);
+                self.revealHiddenImage(canvas, container);
+            } else {
+                self.keyImage.push(canvas);
+            }
         });
     }
 

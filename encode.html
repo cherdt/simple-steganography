@@ -19,32 +19,47 @@
 
 <p>Need to create images for your hidden message or your facade image? Try <a href="http://www.text2image.com">text2image.com</a> or the <a href="https://imgflip.com/memegenerator">imgflip Meme Generator</a> (select the "Private" option when using imgflip).</p>
 
-<div id="codeContainer">
-  <h3>Hidden Image Target</h3>
-  <div id="codedrop"
-       ondragenter="document.getElementById('codedrop').textContent = ''; event.stopPropagation(); event.preventDefault();"
-       ondragover="event.stopPropagation(); event.preventDefault();"
-       ondrop="event.stopPropagation(); event.preventDefault();
-       THEYLIVE.codedrop(event);">
+<div id="controls">
+  <div id="codeContainer">
+    <h3>Hidden Image Target</h3>
+    <div id="codedrop"
+         ondragenter="document.getElementById('codedrop').textContent = ''; event.stopPropagation(); event.preventDefault();"
+         ondragover="event.stopPropagation(); event.preventDefault();"
+         ondrop="event.stopPropagation(); event.preventDefault();
+         THEYLIVE.codedrop(event);">
+    </div>
+    <div id="codeData"></div>
   </div>
-  <div id="codeData"></div>
-</div>
 
-<div id="facadeContainer">
-  <h3>Facade Image Target</h3>
-  <div id="facadedrop"
-       ondragenter="document.getElementById('facadedrop').textContent = ''; event.stopPropagation(); event.preventDefault();"
-       ondragover="event.stopPropagation(); event.preventDefault();"
-       ondrop="event.stopPropagation(); event.preventDefault();
-       THEYLIVE.facadedrop(event);">
+  <div id="keyContainer">
+    <h3>Default Key</h3>
+    <div id="keydrop"
+         ondragenter="event.stopPropagation(); event.preventDefault();"
+         ondragover="event.stopPropagation(); event.preventDefault();"
+         ondrop="event.stopPropagation(); event.preventDefault();
+         THEYLIVE.keydrop(event);">
+         <a href="#" id="toggle" onclick="THEYLIVE.toggleKey(); return false;">enable custom key</a>
+    </div>
+    <div id="keyData"></div>
   </div>
-  <div id="facadeData"></div>
+
+  <div id="facadeContainer">
+    <h3>Facade Image Target</h3>
+    <div id="facadedrop"
+         ondragenter="document.getElementById('facadedrop').textContent = ''; event.stopPropagation(); event.preventDefault();"
+         ondragover="event.stopPropagation(); event.preventDefault();"
+         ondrop="event.stopPropagation(); event.preventDefault();
+         THEYLIVE.facadedrop(event);">
+    </div>
+    <div id="facadeData"></div>
+  </div>
 </div>
 
 <h2>Results</h2>
-<div id="code"><h3>Hidden Image (converted to black and white)</h3></div>
-<div id="facade"><h3>Facade Image (the image to contain the hidden image)</h3></div>
-<div id="result"><h3>Combined image (right-click and select "Save Image As...")</h3></div>
+<div id="code"><h3>Hidden Image</h3><h4>(converted to black and white)</h4></div>
+<div id="facade"><h3>Facade Image</h3><h4>(the image to contain the hidden image)</h4></div>
+<div id="result"><h3>Combined Image</h3><h4>(right-click and select "Save Image As...")</h4></div>
+<div id="key"><h3>Key Image</h3><h4>(save if using a custom key)</h4></div>
 
 <script src="js/encode.js"></script>
 <script>

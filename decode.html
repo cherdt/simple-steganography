@@ -11,23 +11,34 @@
 <h1>Decode an Image</h1>
 <p>Use this page to decode an image hidden inside another image (typically a .png file) using <a href="index.html">They Live Steganography</a>. A <a href="https://github.com/cherdt/they-live">Chrome extension</a> is also available to decode images directly on web pages.</p>
 
-<div id="input"
-     ondragenter="document.getElementById('input').textContent = ''; event.stopPropagation(); event.preventDefault();"
-     ondragover="event.stopPropagation(); event.preventDefault();"
-     ondrop="event.stopPropagation(); event.preventDefault();
-     THEYLIVE.processDrop(event);">
-</div>
+<div id="controls">
 
-<div id="mask" 
-     ondragenter="document.getElementById('mask').textContent = ''; event.stopPropagation(); event.preventDefault();"
-     ondragover="event.stopPropagation(); event.preventDefault();"
-     ondrop="event.stopPropagation(); event.preventDefault();
-     THEYLIVE.processMask(event);">
+  <div id="keyContainer">
+    <div id="keyDrop" 
+         ondragenter="document.getElementById('keyDrop').textContent = ''; event.stopPropagation(); event.preventDefault();"
+         ondragover="event.stopPropagation(); event.preventDefault();"
+         ondrop="event.stopPropagation(); event.preventDefault();
+         THEYLIVE.processDrop(event);">
+    </div>
+    <div id="keyData"></div>
+  </div>
+
+  <div id="inputContainer">
+    <div id="inputDrop"
+         ondragenter="document.getElementById('inputDrop').textContent = ''; event.stopPropagation(); event.preventDefault();"
+         ondragover="event.stopPropagation(); event.preventDefault();"
+         ondrop="event.stopPropagation(); event.preventDefault();
+         THEYLIVE.processDrop(event);">
+    </div>
+    <div id="inputData"></div>
+  </div>
+
 </div>
 
 <h2>Drop and drag an image</h2>
 <p>Drop an image file from your desktop (Finder on a Mac or Explorer on Windows) onto the <strong>VUR (Very Ugly Robot)</strong>. We'll display the hidden image, if any exists.</p>
 <p>If your file does not contain a hidden image, the result will be a black and white image that probably won't look like anything!</p>
+<p>If you have a custom key image, drag that onto the key icon. Otherwise, the robot will use the default key to decode your image.</p>
 
 
 <script src="js/decode.js"></script>

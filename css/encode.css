@@ -1,42 +1,43 @@
 body {
-	padding-right:230px;
+	padding-right:120px;
 }
 
 h2 {
 	clear: both;
 }
 
+#controls {
+	position:fixed;
+	right: 10px;
+	top: 10px;
+	width: 102px;
+}
+
+#codedrop,
 #facadedrop,
-#codedrop {
-    border: 1px solid black;
+#keydrop {
+    border: 1px solid #666;
     min-height: 100px;
 }
 
 #codeContainer,
-#facadeContainer {
+#facadeContainer,
+#keyContainer {
     float: right;
-    margin-right: 1em;
-    position: fixed;
-    top:10px;
-    width: 100px;	
+    margin-bottom: 1em;
+    width: 102px;	
 }
 
 h3,
+h4,
 #codeData,
-#facadeData {
+#facadeData,
+#keyData {
 	background-color: black;
 	color: white;
 	font-family: arial, helvetica, sans-serif;
 	font-size: x-small;
 	margin: 0em; 
-}
-
-#codeContainer {
-	right: 120px;
-}
-
-#facadeContainer {
-	right: 10px;
 }
 
 #codedrop {
@@ -47,24 +48,47 @@ h3,
 	background-image: url(../images/facade_100x100.png);
 }
 
+#keydrop {
+	background-image: url(../images/key_100x100.png);
+}
+
 #facade,
 #code,
+#key,
 #result {
 	border:1px solid black;
 	float: left;
 	margin-right: 1em;
-	min-height: 300px;
-	width: 300px;
+	min-height: 250px;
+	width: 250px;
+}
+
+#key {
+	min-height: 250px;
+	width: 150px;
 }
 
 #facade div,
 #code div,
+#key div,
 #result div {
 	padding: 1em;
 }
 
+#key div {
+	overflow-x: hidden;
+}
+
+
 #facade div:nth-child(even),
 #code div:nth-child(even),
+#key div:nth-child(even),
 #result div:nth-child(even) {
 	background: #CCC;
+}
+
+#toggle {
+	display: block;
+	font-size: x-small;
+	height: 100px;
 }

@@ -6,6 +6,8 @@ var THEYLIVE = {
     codeImage: [],
     facadeImage: [],
     keyImage: [],
+    randomArray: new Int8Array(65536),
+    randomIndex: Number.MAX_VALUE,
     useCustomKey: false,
 
     hasCodeImage: function () {
@@ -76,9 +78,18 @@ var THEYLIVE = {
 
     getRandomValue: function () {
         "use strict";
-        var randomArray = new Int8Array(1);
-        var randomValues = window.crypto.getRandomValues(randomArray);
-        if (randomValues[0] < 0) {
+        // If we have already used all the existing random
+        // numbers, generate new ones
+        if (this.randomIndex >= this.randomArray.length) {
+            this.randomIndex = -1;
+            window.crypto.getRandomValues(this.randomArray);
+        }
+
+        // Advance the array index
+        this.randomIndex = this.randomIndex + 1;
+
+        // Numbers range between -128 and 127
+        if (this.randomArray[this.randomIndex] < 0) {
             return 0;
         }
         return 255;

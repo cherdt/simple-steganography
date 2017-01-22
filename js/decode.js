@@ -43,12 +43,11 @@ var THEYLIVE = {
         if (this.keyImage.length > 0) {
             imgData = this.keyImage[0].getContext("2d").getImageData(0, 0, width, height).data;
         } else {
-            // 7680 pixels × 4320 is the highest UHD 8K TV resolution as of 2017
             for (i = 0; i < width * height; i = i + 4) {
-                imgData[i] = 0;
-                imgData[i + 1] = 255;
-                imgData[i + 2] = 255;
-                imgData[i + 3] = 255;
+                imgData[i] = 0; // red
+                imgData[i + 1] = 255; // green
+                imgData[i + 2] = 255; // blue
+                imgData[i + 3] = 255; // alpha
             }
         }
         return imgData;
@@ -123,6 +122,8 @@ var THEYLIVE = {
                 container.appendChild(canvas);
                 self.revealHiddenImage(canvas, container);
             } else {
+                // for now, assume the latest key is immediately active
+                self.keyImage = [];
                 self.keyImage.push(canvas);
             }
         });

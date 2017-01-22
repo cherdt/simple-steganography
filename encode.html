@@ -26,22 +26,19 @@
          ondragenter="document.getElementById('codedrop').textContent = ''; event.stopPropagation(); event.preventDefault();"
          ondragover="event.stopPropagation(); event.preventDefault();"
          ondrop="event.stopPropagation(); event.preventDefault();
-         THEYLIVE.codedrop(event);">
+         THEYLIVE.processDrop(event);">
     </div>
     <div id="codeData"></div>
   </div>
 
   <div id="keyContainer">
     <h3>Default Key</h3>
-    <div id="keydrop"
-         ondragenter="event.stopPropagation(); event.preventDefault();"
-         ondragover="event.stopPropagation(); event.preventDefault();"
-         ondrop="event.stopPropagation(); event.preventDefault();
-         THEYLIVE.keydrop(event);">
-         <a href="#" id="toggle" onclick="THEYLIVE.toggleKey(); return false;">enable custom key</a>
-    </div>
+    <a href="#" id="keydrop" 
+        onclick="THEYLIVE.toggleKey(); return false;"
+        ondragenter="event.stopPropagation(); event.preventDefault();"
+        ondragover="event.stopPropagation(); event.preventDefault();"
+        ondrop="event.stopPropagation(); event.preventDefault(); THEYLIVE.processDrop(event);">Enable Custom Key</a>
     <div id="keyData"></div>
-    <div id="toggleData"></div>
   </div>
 
   <div id="facadeContainer">
@@ -50,7 +47,7 @@
          ondragenter="document.getElementById('facadedrop').textContent = ''; event.stopPropagation(); event.preventDefault();"
          ondragover="event.stopPropagation(); event.preventDefault();"
          ondrop="event.stopPropagation(); event.preventDefault();
-         THEYLIVE.facadedrop(event);">
+         THEYLIVE.processDrop(event);">
     </div>
     <div id="facadeData"></div>
   </div>

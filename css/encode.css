@@ -50,6 +50,9 @@ h4,
 
 #keydrop {
 	background-image: url(../images/key_100x100.png);
+	display: block;
+	font-size: x-small;
+	height: 100px;
 }
 
 #facade,
@@ -86,10 +89,4 @@ h4,
 #key div:nth-child(even),
 #result div:nth-child(even) {
 	background: #CCC;
-}
-
-#toggle {
-	display: block;
-	font-size: x-small;
-	height: 100px;
 }

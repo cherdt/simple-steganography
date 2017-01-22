@@ -23,22 +23,7 @@ var THEYLIVE = {
         return (this.keyImage.length > 0);
     },
 
-    codedrop: function (event) {
-        "use strict";
-        this.dodrop(event);
-    },
-
-    facadedrop: function (event) {
-        "use strict";
-        this.dodrop(event);
-    },
-
-    keydrop: function (event) {
-        "use strict";
-        this.dodrop(event);
-    },
-
-    dodrop: function (event) {
+    processDrop: function (event) {
         "use strict";
         var dt = event.dataTransfer;
         var files = dt.files;
@@ -188,7 +173,7 @@ var THEYLIVE = {
             headerText = "Custom Key";
             linkText = "Disable Custom Key";
         }
-        document.getElementById("toggle").textContent = linkText;
+        document.getElementById("keydrop").textContent = linkText;
         document.getElementById("keyContainer").getElementsByTagName("h3")[0].textContent = headerText;
     },
 
@@ -227,7 +212,7 @@ var THEYLIVE = {
                 document.getElementById("facade").appendChild(divElement);
             }
 
-            if (iid.indexOf("key") >= 0 || iid.indexOf("toggle") >= 0) {
+            if (iid.indexOf("key") >= 0) {
                 canvasElement.id = "keyCanvas";
                 if (!self.useCustomKey) {
                     self.toggleKey();

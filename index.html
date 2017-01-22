@@ -36,7 +36,16 @@ dt { font-weight: bold; margin-top: .5em; }
 <dt>I tried it but part of my hidden message is missing!</dt>
 <dd>If your facade image is smaller than your hidden message, only the portion of your hidden message that fits within the facade image will be included. It works best if your hidden message and your facade image are the same size, but a larger facade image will work too.</dd>
 <dt>I posted an encoded image to Twitter or Facebook and it no longer contains the encoded message. Why not?</dt>
-<dd>Twitter and Facebook convert uploaded images to JPEGs. The JPEG format is a lossy format and the conversion will almost certainly eliminate the coded message. I've successfully posted an encoded image to Tumblr though.</dd>
+<dd>Twitter and Facebook convert uploaded images to JPEGs. The JPEG format is a lossy format and the conversion will almost certainly eliminate the coded message. I've successfully posted an encoded image to Tumblr though. The following image hosting sites all preserve the hidden data:
+  <ul>
+    <li><a href="https://www.flickr.com">Flickr</a></li>
+    <li><a href="https://imgur.com">imgur</a></li>
+    <li><a href="https://postimage.io">postimage.io</a></li>
+    <li><a href="https://imgsafe.org">imgsafe.org</a></li>
+    <li><a href="http://pasteboard.co">pasteboard</a></li>
+    <li><a href="https://imgbb.com">imgbb</a></li>
+  </ul>
+</dd>
 <dt>How does it work?</dt>
 <dd>Black and white images (not grayscale, but literally just black and white) contain only one bit of data per pixel. The encoder alters the least-significant red bit in each pixel of the facade image. The result is different, but not perceptible to the human eye in most cases. When using the default key, the least-significant red bit matches the corresponding bit of the black and white code image.</dd>
 <dt>What are the custom keys?</dt>

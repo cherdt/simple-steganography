@@ -91,7 +91,9 @@ var THEYLIVE = {
 
     getRandomValue: function () {
         "use strict";
-        if (Math.floor(Math.random() * 2) === 0) {
+        var randomArray = new Int8Array(1);
+        var randomValues = window.crypto.getRandomValues(randomArray);
+        if (randomValues[0] < 0) {
             return 0;
         }
         return 255;
@@ -105,18 +107,19 @@ var THEYLIVE = {
         return minmax(0, 255);
     },
 
-    generateMask: function () {
+    generateMask: function (canvasCode) {
         "use strict";
         var imgData;
         var i;
         var divElement = document.createElement("div");
         var canvas = document.createElement("canvas");
+        // 7680 pixels × 4320 is the highest UHD 8K TV resolution as of 2017
+        // but that would create (probably) unnecessarily large key files
         canvas.width = 1920;
         canvas.height = 1080;
         //canvas.getContext('2d').drawImage(canvasCode, 0, 0);
         divElement.appendChild(canvas);
         document.getElementById("key").appendChild(divElement);
-        // 7680 pixels × 4320 is the highest UHD 8K TV resolution as of 2017
 
         imgData = canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height);
         for (i = 0; i < imgData.data.length; i = i + 4) {
@@ -127,6 +130,9 @@ var THEYLIVE = {
         }
 
         canvas.getContext('2d').putImageData(imgData, 0, 0);
+
+        // return just the portion needed to hide the code
+        imgData = canvas.getContext('2d').getImageData(0, 0, canvasCode.width, canvasCode.height);
         return imgData.data;
     },
 

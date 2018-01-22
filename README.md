@@ -1,6 +1,8 @@
 simple steganography
 ====================
 
+[![Build Status](https://travis-ci.org/cherdt/simple-steganography.svg?branch=master)](https://travis-ci.org/cherdt/simple-steganography)
+
 A small web application that allows users to create
 and decode steganographic images. It can be found at:
 (http://osric.com/chris/steganography/)

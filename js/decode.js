@@ -1,5 +1,6 @@
 /*jslint
-    bitwise, browser
+    bitwise: false,
+    browser: true
 */
 var THEYLIVE = {
     keyImage: [],

@@ -1,5 +1,5 @@
 /*jslint
-    bitwise: false,
+    bitwise: true,
     browser: true
 */
 
@@ -259,7 +259,7 @@ var THEYLIVE = {
                 self.combineImages(self.codeImage.shift(), self.facadeImage.shift());
             }
 
-        }
+        };
 
     }
 

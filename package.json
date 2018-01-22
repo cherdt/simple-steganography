@@ -1,0 +1,12 @@
+{
+  "name": "simple-steganography",
+  "description": "Travis-CI check for JSHint (Code Linting)",
+  "author": "Chris Herdt",
+  "version": "0.0.1",
+  "devDependencies": {
+    "jshint": "^2.6.0"
+  },
+  "scripts": {
+    "lint": "./node_modules/jshint/bin/jshint js/"
+  }
+}

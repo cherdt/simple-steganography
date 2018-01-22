@@ -39,7 +39,6 @@ var THEYLIVE = {
         var imgData = [];
         var i;
 
-        console.log(this.keyImage.length);
         if (this.keyImage.length > 0) {
             imgData = this.keyImage[0].getContext("2d").getImageData(0, 0, width, height).data;
         } else {
@@ -96,22 +95,28 @@ var THEYLIVE = {
     loadImage: function (file, id) {
         "use strict";
         var self = this;
-        var sprite;
-        var canvas;
-        var context;
         var iid = id;
+        var reader = new FileReader();
         var header = document.createElement("h3");
         var container = document.createElement("div");
+        var img = document.createElement("img");
 
-        Promise.all([
-            createImageBitmap(file)
-        ]).then(function (sprites) {
-            sprite = sprites[0];
-            canvas = document.createElement("canvas");
-            canvas.width = sprite.width;
-            canvas.height = sprite.height;
+        img.file = file;
+        reader.onload = (function (aImg) {
+            return function (e) {
+                aImg.src = e.target.result;
+            };
+        }(img));
+        reader.readAsDataURL(file);
+
+        // we need to wait for the image to load to continue processing
+        img.onload = function () {
+            var canvas = document.createElement("canvas");
+            var context;
+            canvas.width = img.width;
+            canvas.height = img.height;
             context = canvas.getContext("2d");
-            context.drawImage(sprite, 0, 0);
+            context.drawImage(img, 0, 0);
 
             if (iid.indexOf("input") >= 0) {
                 header.innerHTML = file.name;
@@ -126,7 +131,8 @@ var THEYLIVE = {
                 self.keyImage = [];
                 self.keyImage.push(canvas);
             }
-        });
+        };
+
     }
 
 };

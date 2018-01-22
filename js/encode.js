@@ -1,5 +1,6 @@
 /*jslint
-    bitwise, browser
+    bitwise: false,
+    browser: true
 */
 
 var THEYLIVE = {
@@ -59,7 +60,12 @@ var THEYLIVE = {
     onebit: function (canvas) {
         "use strict";
         var imgData = canvas.getContext("2d").getImageData(0, 0, canvas.width, canvas.height);
-        var i, colorVal, red, green, blue;
+        var i;
+        var colorVal;
+        var red;
+        var green;
+        var blue;
+
         for (i = 0; i < imgData.data.length; i = i + 4) {
             if (((imgData.data[i] + imgData.data[i + 1] + imgData.data[i + 2]) / 3) > 127) {
                 colorVal = 255;
@@ -113,11 +119,11 @@ var THEYLIVE = {
         // but that would create (probably) unnecessarily large key files
         canvas.width = 1920;
         canvas.height = 1080;
-        //canvas.getContext('2d').drawImage(canvasCode, 0, 0);
+        //canvas.getContext("2d").drawImage(canvasCode, 0, 0);
         divElement.appendChild(canvas);
         document.getElementById("key").appendChild(divElement);
 
-        imgData = canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height);
+        imgData = canvas.getContext("2d").getImageData(0, 0, canvas.width, canvas.height);
         for (i = 0; i < imgData.data.length; i = i + 4) {
             imgData.data[i] = this.getValue(Math.min); //0
             imgData.data[i + 1] = this.getValue(Math.max); //255
@@ -125,10 +131,10 @@ var THEYLIVE = {
             imgData.data[i + 3] = 255; //255
         }
 
-        canvas.getContext('2d').putImageData(imgData, 0, 0);
+        canvas.getContext("2d").putImageData(imgData, 0, 0);
 
         // return just the portion needed to hide the code
-        imgData = canvas.getContext('2d').getImageData(0, 0, canvasCode.width, canvasCode.height);
+        imgData = canvas.getContext("2d").getImageData(0, 0, canvasCode.width, canvasCode.height);
         return imgData.data;
     },
 
@@ -136,14 +142,18 @@ var THEYLIVE = {
         "use strict";
         var div = document.createElement("div");
         var canvas = document.createElement("canvas");
-        var context, i, hiddenData, imgData;
-        var width, height;
+        var context;
+        var i;
+        var hiddenData;
+        var imgData;
+        var width;
+        var height;
         var mask;
 
         // The new canvas needs to be the size of the facade
         canvas.width = canvasFacade.width;
         canvas.height = canvasFacade.height;
-        context = canvas.getContext('2d');
+        context = canvas.getContext("2d");
         context.drawImage(canvasFacade, 0, 0);
         div.appendChild(canvas);
         document.getElementById("result").appendChild(div);
@@ -152,12 +162,12 @@ var THEYLIVE = {
         // If the images are different dimensions, we can only use the intersection
         width = Math.min(canvasCode.width, canvasFacade.width);
         height = Math.min(canvasCode.height, canvasFacade.height);
-        hiddenData = canvasCode.getContext('2d').getImageData(0, 0, width, height);
-        imgData = canvasFacade.getContext('2d').getImageData(0, 0, width, height);
+        hiddenData = canvasCode.getContext("2d").getImageData(0, 0, width, height);
+        imgData = canvasFacade.getContext("2d").getImageData(0, 0, width, height);
 
         // get key/mask data
         if (this.useCustomKey && this.hasKeyImage()) {
-            mask = this.keyImage.shift().getContext('2d').getImageData(0, 0, width, height).data;
+            mask = this.keyImage.shift().getContext("2d").getImageData(0, 0, width, height).data;
         } else {
             mask = this.generateMask(canvasCode);
         }
@@ -192,18 +202,28 @@ var THEYLIVE = {
         "use strict";
         var self = this;
         var iid = id;
-        Promise.all([
-            createImageBitmap(file)
-        ]).then(function (sprites) {
-            var divElement;
-            var canvasElement;
-            divElement = document.createElement("div");
-            canvasElement = document.createElement("canvas");
+        var reader = new FileReader();
+        var img = document.createElement("img");
+
+        img.file = file;
+        reader.onload = (function (aImg) {
+            return function (e) {
+                aImg.src = e.target.result;
+            };
+        }(img));
+        reader.readAsDataURL(file);
+
+        // we need to wait for the image to load to continue processing
+        img.onload = function () {
+            var divElement = document.createElement("div");
+            var canvasElement = document.createElement("canvas");
+            var ctxTemp;
+
             canvasElement.id = iid.replace("drop", "Canvas");
-            canvasElement.width = sprites[0].width;
-            canvasElement.height = sprites[0].height;
-            var ctxTemp = canvasElement.getContext('2d');
-            ctxTemp.drawImage(sprites[0], 0, 0);
+            canvasElement.width = img.width;
+            canvasElement.height = img.height;
+            ctxTemp = canvasElement.getContext("2d");
+            ctxTemp.drawImage(img, 0, 0);
 
             if (iid.indexOf("code") >= 0) {
                 // convert to black and white
@@ -239,7 +259,8 @@ var THEYLIVE = {
                 self.combineImages(self.codeImage.shift(), self.facadeImage.shift());
             }
 
-        });
+        }
+
     }
 
 };

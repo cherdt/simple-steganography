@@ -182,6 +182,8 @@ var THEYLIVE = {
                 imgData.data[i] = imgData.data[i] & 254; // zero LSB
             }
         }
+        // hack to preserve PNGs on some platforms by introducing partial transparency
+        imgData.data[imgData.data.length - 1] = 254;
         context.putImageData(imgData, 0, 0);
     },
 
